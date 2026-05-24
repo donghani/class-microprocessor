@@ -1,87 +1,1227 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Class Microprocessor</title>
-    <style>
-      body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        line-height: 1.6;
-        margin: 20px;
-        color: #333;
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>마이크로프로세서 (Microprocessor & MCU) | 경희대학교</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    /* Modern Reset & Base Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg-dark: #0b0f19;
+      --bg-card: rgba(17, 24, 39, 0.7);
+      --bg-card-hover: rgba(17, 24, 39, 0.95);
+      --border-color: rgba(255, 255, 255, 0.06);
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --primary: #f59e0b; /* Amber */
+      --primary-glow: rgba(245, 158, 11, 0.15);
+      --secondary: #f97316; /* Orange */
+      --secondary-glow: rgba(249, 115, 22, 0.15);
+      --accent: #10b981; /* Emerald */
+      --accent-glow: rgba(16, 185, 129, 0.15);
+      --font-outfit: 'Outfit', 'Noto Sans KR', sans-serif;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Noto Sans KR', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(245, 158, 11, 0.04) 0%, transparent 45%),
+        radial-gradient(circle at 90% 80%, rgba(249, 115, 22, 0.05) 0%, transparent 45%);
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    /* Header Section */
+    header {
+      text-align: center;
+      margin-bottom: 50px;
+      position: relative;
+    }
+
+    .university-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--primary);
+      margin-bottom: 20px;
+      backdrop-filter: blur(10px);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    h1 {
+      font-family: var(--font-outfit);
+      font-size: 2.8rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff 30%, var(--primary) 70%, var(--secondary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .header-subtitle {
+      color: var(--text-muted);
+      font-size: 1.15rem;
+      max-width: 700px;
+      margin: 0 auto;
+      font-weight: 300;
+    }
+
+    /* Banner Illustration */
+    .banner-container {
+      margin-bottom: 50px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      position: relative;
+      background: rgba(11, 15, 25, 0.6);
+      backdrop-filter: blur(10px);
+    }
+
+    .banner-container img {
+      width: 100%;
+      height: auto;
+      max-height: 400px;
+      object-fit: cover;
+      display: block;
+      transition: var(--transition);
+      opacity: 0.85;
+    }
+
+    .banner-container:hover img {
+      transform: scale(1.015);
+      opacity: 0.95;
+    }
+
+    /* Navigation Tabs */
+    .tabs-nav {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 15px;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      font-weight: 500;
+      padding: 12px 24px;
+      cursor: pointer;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition);
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+      background: rgba(245, 158, 11, 0.08);
+      box-shadow: inset 0 0 0 1px rgba(245, 158, 11, 0.25);
+    }
+
+    /* Tab Content panels */
+    .tab-panel {
+      display: none;
+      animation: fadeIn 0.4s ease-out forwards;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Search & Filter bar */
+    .search-wrapper {
+      margin-bottom: 30px;
+      position: relative;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .search-input {
+      width: 100%;
+      background: rgba(17, 24, 39, 0.5);
+      border: 1px solid var(--border-color);
+      padding: 14px 20px 14px 50px;
+      border-radius: 14px;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px var(--primary-glow);
+      background: rgba(17, 24, 39, 0.8);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      pointer-events: none;
+      transition: var(--transition);
+    }
+
+    .search-input:focus + .search-icon {
+      color: var(--primary);
+    }
+
+    /* Grid Layouts */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 25px;
+    }
+
+    /* Lecture Card */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: var(--transition);
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      background: var(--bg-card-hover);
+      border-color: rgba(245, 158, 11, 0.2);
+      box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.4), 0 0 20px 0 var(--primary-glow);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .chapter-badge {
+      font-family: var(--font-outfit);
+      font-size: 12px;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 4px 10px;
+      border-radius: 8px;
+      color: var(--text-muted);
+    }
+
+    .card:hover .chapter-badge {
+      color: var(--primary);
+      background: rgba(245, 158, 11, 0.1);
+      border-color: rgba(245, 158, 11, 0.2);
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-main);
+    }
+
+    .card-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      font-weight: 300;
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+
+    .card-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .card-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-main);
+      padding: 10px 18px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .card-btn:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #000;
+      box-shadow: 0 10px 20px -5px rgba(245, 158, 11, 0.4);
+    }
+
+    /* STM32 Lab Layout */
+    .lab-section {
+      margin-bottom: 50px;
+    }
+
+    .section-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+    }
+
+    .section-title.gpio { color: var(--accent); }
+    .section-title.interrupt { color: var(--primary); }
+    .section-title.adc { color: #f97316; }
+    .section-title.timer { color: #38bdf8; }
+    .section-title.comm { color: #a855f7; }
+    .section-title.extra { color: #ec4899; }
+
+    .lab-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    @media (min-width: 768px) {
+      .lab-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
-      h1 {
-        border-bottom: 2px solid #eee;
-        padding-bottom: 5px;
+    }
+
+    .lab-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 24px;
+      position: relative;
+      transition: var(--transition);
+      backdrop-filter: blur(10px);
+    }
+
+    .lab-card:hover {
+      border-color: rgba(255, 255, 255, 0.1);
+      background: var(--bg-card-hover);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .lab-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .lab-icon-box {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .gpio .lab-icon-box { color: var(--accent); background: rgba(16, 185, 129, 0.08); }
+    .interrupt .lab-icon-box { color: var(--primary); background: rgba(245, 158, 11, 0.08); }
+    .adc .lab-icon-box { color: #f97316; background: rgba(249, 115, 22, 0.08); }
+    .timer .lab-icon-box { color: #38bdf8; background: rgba(56, 189, 248, 0.08); }
+    .comm .lab-icon-box { color: #a855f7; background: rgba(168, 85, 247, 0.08); }
+    .extra .lab-icon-box { color: #ec4899; background: rgba(236, 72, 153, 0.08); }
+
+    .file-extension {
+      font-family: var(--font-outfit);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+      background: #0284c7;
+      color: #fff;
+    }
+
+    .lab-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .lab-desc {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+      font-weight: 300;
+    }
+
+    .lab-links {
+      display: flex;
+      gap: 12px;
+    }
+
+    .lab-link-btn {
+      flex: 1;
+      padding: 10px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-main);
+      transition: var(--transition);
+    }
+
+    .lab-link-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    /* Course Info / Professor Tab */
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+
+    @media (min-width: 900px) {
+      .info-grid {
+        grid-template-columns: 1.2fr 1.8fr;
       }
-      ul {
-        list-style-type: disc;
-        margin-bottom: 10px;
-      }
-      ul ul {
-        list-style-type: circle;
-        margin-top: 5px;
-      }
-      a {
-        color: #0366d6;
-        text-decoration: none;
-      }
-      a:hover {
-        text-decoration: underline;
-      }
-    </style>
-  </head>
-  <body>
-    <div style="display: flex; margin-bottom: 20px; justify-content: center;">
-      <img src="concept2.png" alt="Microprocessor Concept 1" style="width: 100%; max-width: 1000px; height: auto; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    }
+
+    .profile-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+
+    .avatar-wrapper {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 20px auto;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #fff;
+      box-shadow: 0 10px 25px rgba(245, 158, 11, 0.2);
+    }
+
+    .prof-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .prof-title {
+      color: var(--primary);
+      font-size: 0.95rem;
+      font-weight: 500;
+      margin-bottom: 25px;
+    }
+
+    .prof-info-list {
+      text-align: left;
+      list-style: none;
+    }
+
+    .prof-info-list li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .prof-info-list li:last-child {
+      border: none;
+    }
+
+    .prof-info-list li i {
+      color: var(--primary);
+    }
+
+    .details-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 30px;
+      backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .detail-item h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .detail-item h3 i {
+      color: var(--secondary);
+    }
+
+    .detail-item p {
+      color: var(--text-muted);
+      font-weight: 300;
+      font-size: 0.95rem;
+    }
+
+    /* Textbook sub-card */
+    .textbook-box {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 10px;
+    }
+
+    .textbook-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(245, 158, 11, 0.1);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 1.5rem;
+    }
+
+    /* YouTube Card */
+    .youtube-banner {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(11, 15, 25, 0.8) 100%);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 10px;
+    }
+
+    .youtube-banner-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .youtube-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #ef4444;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
+
+    .yt-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fca5a5;
+    }
+
+    .yt-link {
+      align-self: flex-start;
+      background: #ef4444;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .yt-link:hover {
+      background: #ef4444;
+      box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      margin-top: 80px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-color);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 300;
+    }
+
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <div class="university-badge">
+        <i data-lucide="cpu" style="width: 16px; height: 16px;"></i>
+        Kyung Hee University
+      </div>
+      <h1>마이크로프로세서</h1>
+      <p class="header-subtitle">전자공학과 김동한 교수님의 마이크로프로세서(STM32) 강의 교안 및 수업용 실습 프로젝트 보관소</p>
+    </header>
+
+    <!-- Concept Illustration Banner -->
+    <div class="banner-container">
+      <img src="concept2.png" alt="Microprocessor Concept Illustration">
     </div>
-    <h1>소개</h1>
-    <ul>
-      <li>
-        <strong>강사</strong>
-        <ul>
-          <li>전자공학과 김동한 교수 (전자정보대학 609호, 내선번호 3831)</li>
-          <li>donghani@khu.ac.kr</li>
-          <li>상담시간: 수업 후 1시간</li>
-        </ul>
-      </li>
-      <li>
-        <strong>교과서</strong>
-        <ul>
-          <li>
-             STM32CubeIDE를 이용한 STM32 따라하기(저자:김남수, 이진)
-          </li>
-          <li>보조자료: 인터넷 활용 (Google, Youtube)</li>
-        </ul>
-      </li>
-      <li>
-        <strong>강의자료</strong>
-        <ul>
-          <li>
-            <a href="https://e-campus.khu.ac.kr">https://e-campus.khu.ac.kr</a>
-            에 pdf로 업로드함
-          </li>
-          <li>
-            <a href="https://github.com/donghani/class-microprocessor/"
-              >https://github.com/donghani/class-microprocessor/</a
-            >
-            에도 업로드함
-          </li>
-        </ul>
-      </li>
-      <li>
-        <strong
-          >강의영상 녹화본은 youtube에 업로드함 (경희대 김동한으로 검색)</strong
-        >
-        <ul>
-          <li>
-            <a href="https://www.youtube.com/channel/UCT_h-5YhlC0t9LEdVckdrXQ"
-              >https://www.youtube.com/channel/UCT_h-5YhlC0t9LEdVckdrXQ</a
-            >
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </body>
+
+    <!-- Tabs Navigation -->
+    <nav class="tabs-nav">
+      <button class="tab-btn active" onclick="switchTab('lectures')">
+        <i data-lucide="book-open" style="width: 18px; height: 18px;"></i>
+        강의 교안 (PDF)
+      </button>
+      <button class="tab-btn" onclick="switchTab('matlab')">
+        <i data-lucide="binary" style="width: 18px; height: 18px;"></i>
+        STM32F103 실습실
+      </button>
+      <button class="tab-btn" onclick="switchTab('info')">
+        <i data-lucide="info" style="width: 18px; height: 18px;"></i>
+        교수 및 과목 정보
+      </button>
+    </nav>
+
+    <!-- TAB 1: Lectures -->
+    <div id="lectures" class="tab-panel active">
+      <!-- Search Input -->
+      <div class="search-wrapper">
+        <input type="text" id="lectureSearch" class="search-input" placeholder="강의 주제 또는 챕터 검색..." oninput="filterLectures()">
+        <i data-lucide="search" class="search-icon" style="width: 20px; height: 20px;"></i>
+      </div>
+
+      <!-- Lectures Grid -->
+      <div class="cards-grid" id="lecturesGrid">
+        <!-- Ch 0 -->
+        <div class="card" data-title="마이크로프로세서 과목 소개 오리엔테이션 0장">
+          <div class="card-content">
+            <div class="card-meta">
+              <span class="chapter-badge">O.T.</span>
+            </div>
+            <h3 class="card-title">0장. 과목 오리엔테이션</h3>
+            <p class="card-desc">마이크로프로세서 설계 및 하드웨어 실험 전반의 강의 개요, 평가 방식 및 개발 환경 구성 요령.</p>
+          </div>
+          <div class="card-actions">
+            <a class="card-btn" href="./0.%20%EB%A7%88%EC%9D%B4%ED%81%AC%EB%A1%9C%ED%94%84%EB%A1%9C%EC%85%8B%EC%96%B4.pdf" download>
+              <i data-lucide="download" style="width: 14px; height: 14px;"></i>
+              과목 소개 PDF
+            </a>
+            <a class="card-btn" href="./0.%20%EC%98%A4%EB%A6%AC%EC%97%94%ED%85%8C%EC%9D%B4%EC%85%98%20%EB%B0%8F%20%EA%B0%9C%EB%B0%9C%20%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%84%B1.pdf" download>
+              <i data-lucide="download" style="width: 14px; height: 14px;"></i>
+              개발환경 가이드 PDF
+            </a>
+          </div>
+        </div>
+
+        <!-- Ch 1 -->
+        <div class="card" data-title="제1장 stm32 개요 기초이론 cpu 하바드 폰노이만">
+          <div class="card-content">
+            <div class="card-meta">
+              <span class="chapter-badge">Chapter 01</span>
+            </div>
+            <h3 class="card-title">1장. STM32 개요 및 기초이론</h3>
+            <p class="card-desc">임베디드 하드웨어 구조(Harvard vs Von-Neumann), RISC/CISC 아키텍처 비교 및 STM32F1 시리즈 특징 분석.</p>
+          </div>
+          <div class="card-actions">
+            <a class="card-btn" href="./1.%20STM32%20%EA%B0%9C%EC%9A%94.pdf" download>
+              <i data-lucide="download" style="width: 14px; height: 14px;"></i>
+              STM32 개요 PDF
+            </a>
+            <a class="card-btn" href="./1.%20%EB%A7%88%EC%9D%B4%ED%81%AC%EB%A1%9C%ED%94%84%EB%A1%9C%EC%85%8B%EC%96%B4%EC%97%90%20%EB%8C%80%ED%95%9C%20%EA%B8%B0%EC%B4%88%EC%9D%B4%EB%A1%A0_v2.pdf" download>
+              <i data-lucide="download" style="width: 14px; height: 14px;"></i>
+              기초이론 v2 PDF
+            </a>
+          </div>
+        </div>
+
+        <!-- Ch 2 -->
+        <div class="card" data-title="제2장 arm cortex-m 프로세서 개요 stm32 시작하기 m3 레지스터">
+          <div class="card-content">
+            <div class="card-meta">
+              <span class="chapter-badge">Chapter 02</span>
+            </div>
+            <h3 class="card-title">2장. Cortex-M3 & STM32 시작</h3>
+            <p class="card-desc">Cortex-M3 아키텍처 레지스터 구조, 동작 모드 및 STM32CubeIDE 연동 첫 실습.</p>
+          </div>
+          <div class="card-actions">
+            <a class="card-btn" href="./2.%20ARM%20Cortex-M%20%ED%94%84%EB%A1%9C%EC%85%8B%EC%96%B4%20%EA%B0%9C%EC%9A%94-v2.pdf" download>
+              <i data-lucide="download" style="width: 14px; height: 14px;"></i>
+              Cortex-M3 개요 PDF
+            </a>
+            <a class="card-btn" href="./2.%20STM32%20%EC%8B%DC%EC%9E%91%ED%95%98%EA%B8%B0.pdf" download>
+              <i data-lucide="download" style="width: 14px; height: 14px;"></i>
+              STM32 시작하기 PDF
+            </a>
+          </div>
+        </div>
+
+        <!-- Ch 3 -->
+        <div class="card" data-title="제3장 hal hardware abstraction layer 레지스터 api">
+          <div class="card-content">
+            <div class="card-meta">
+              <span class="chapter-badge">Chapter 03</span>
+            </div>
+            <h3 class="card-title">3장. HAL 드라이버 아키텍처</h3>
+            <p class="card-desc">하드웨어 추상화 계층(HAL) 드라이버의 개념적 구조 및 레지스터 직접 제어 대비 장점과 HAL API 활용 기술.</p>
+          </div>
+          <div class="card-actions">
+            <a class="card-btn" href="./3.%20HAL.pdf" download>
+              <i data-lucide="download" style="width: 14px; height: 14px;"></i>
+              PDF 다운로드
+            </a>
+          </div>
+        </div>
+
+        <!-- Ch 4 -->
+        <div class="card" data-title="제4장 gpio exti 입출력 외부 인터럽트 스위치">
+          <div class="card-content">
+            <div class="card-meta">
+              <span class="chapter-badge">Chapter 04</span>
+            </div>
+            <h3 class="card-title">4장. GPIO 및 외부 인터럽트</h3>
+            <p class="card-desc">범용 입출력(GPIO) 구조, 설정 및 버튼 입력을 하드웨어 실시간으로 처리하는 외부 인터럽트(EXTI) 설계.</p>
+          </div>
+          <div class="card-actions">
+            <a class="card-btn" href="./4.%20GPIO%20%26%20EXIT.pdf" download>
+              <i data-lucide="download" style="width: 14px; height: 14px;"></i>
+              PDF 다운로드
+            </a>
+          </div>
+        </div>
+
+        <!-- Ch 5 -->
+        <div class="card" data-title="제5장 adc 아날로그 디지털 변환 가변저항 폴링 dma">
+          <div class="card-content">
+            <div class="card-meta">
+              <span class="chapter-badge">Chapter 05</span>
+            </div>
+            <h3 class="card-title">5장. ADC 아날로그 변환</h3>
+            <p class="card-desc">아날로그 데이터를 수집하기 위한 양자화 및 표본화 원리, 가변저항 전압의 연속/단일 스캐닝 수집 기법.</p>
+          </div>
+          <div class="card-actions">
+            <a class="card-btn" href="./5.%20ADC.pdf" download>
+              <i data-lucide="download" style="width: 14px; height: 14px;"></i>
+              ADC 기초 PDF
+            </a>
+            <a class="card-btn" href="./5.%20ARM%20M3_CH09_ADC.pdf" download>
+              <i data-lucide="download" style="width: 14px; height: 14px;"></i>
+              ADC 상세 PDF
+            </a>
+          </div>
+        </div>
+
+        <!-- Ch 6 -->
+        <div class="card" data-title="제6장 tim timer 타이머 카운터 pwm RGB led rc 서보 모터">
+          <div class="card-content">
+            <div class="card-meta">
+              <span class="chapter-badge">Chapter 06</span>
+            </div>
+            <h3 class="card-title">6장. 타이머 및 입출력 제어</h3>
+            <p class="card-desc">MCU 타이머 레지스터 연산, PWM 주파수 조절법을 활용한 RGB LED, 부저음 합성과 RC 서보 모터 각도 정밀 제어.</p>
+          </div>
+          <div class="card-actions">
+            <a class="card-btn" href="./6.%20TIM.pdf" download>
+              <i data-lucide="download" style="width: 14px; height: 14px;"></i>
+              TIM 기본 PDF
+            </a>
+            <a class="card-btn" href="./6.%20ARM%20M3_CH08_%ED%83%80%EC%9D%B4%EB%A8%B8%EB%A5%BC%20%EC%9D%B4%EC%9A%A9%ED%95%9C%20%EC%9e%85%EC%B6%9c%EB%A0%A5%20%EC%A0%9C%EC%96%B4.pdf" download>
+              <i data-lucide="download" style="width: 14px; height: 14px;"></i>
+              타이머 상세 PDF
+            </a>
+          </div>
+        </div>
+
+        <!-- Ch 7 -->
+        <div class="card" data-title="제7장 serial communication 직렬 통신 uart i2c spi eeprom">
+          <div class="card-content">
+            <div class="card-meta">
+              <span class="chapter-badge">Chapter 07</span>
+            </div>
+            <h3 class="card-title">7장. 직렬 시리얼 버스 통신</h3>
+            <p class="card-desc">비동기 UART 문자 송수신, 시리얼 통신 성능 비교 및 I2C 통신 프로토콜을 통한 외부 EEPROM 읽기/쓰기.</p>
+          </div>
+          <div class="card-actions">
+            <a class="card-btn" href="./7.%20Serial%20Communication.pdf" download>
+              <i data-lucide="download" style="width: 14px; height: 14px;"></i>
+              통신 기초 PDF
+            </a>
+            <a class="card-btn" href="./7-2.%20I2C%20%ED%86%B5%EC%8B%A0.pdf" download>
+              <i data-lucide="download" style="width: 14px; height: 14px;"></i>
+              I2C 통신 PDF
+            </a>
+            <a class="card-btn" href="./7.%20Serial%20Communication-updated.pdf" download>
+              <i data-lucide="download" style="width: 14px; height: 14px;"></i>
+              통신 업뎃 PDF
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: STM32 Lab -->
+    <div id="matlab" class="tab-panel">
+      <!-- 1. GPIO & Debug -->
+      <section class="lab-section gpio">
+        <h2 class="section-title gpio">
+          <i data-lucide="toggle-left"></i>
+          GPIO 입출력 및 시리얼 디버그 (GPIO & Debug)
+        </h2>
+        <div class="lab-grid">
+          <div class="lab-card">
+            <div class="lab-card-header">
+              <div class="lab-icon-box"><i data-lucide="sparkles" style="width: 20px; height: 20px;"></i></div>
+              <span class="file-extension">STM32CubeIDE</span>
+            </div>
+            <h4 class="lab-title">2. LED_Blink</h4>
+            <p class="lab-desc">가장 첫걸음으로 수행하는 핀 출력 제어를 통한 온보드 LED 점멸 실습.</p>
+            <div class="lab-links">
+              <a href="./STM32F103/2.%20LED_Blink" class="lab-link-btn">디렉토리 탐색</a>
+            </div>
+          </div>
+
+          <div class="lab-card">
+            <div class="lab-card-header">
+              <div class="lab-icon-box"><i data-lucide="message-square" style="width: 20px; height: 20px;"></i></div>
+              <span class="file-extension">STM32CubeIDE</span>
+            </div>
+            <h4 class="lab-title">2. Serial Debug</h4>
+            <p class="lab-desc">HAL_UART_Transmit을 연동하여 printf 출력을 시리얼 포트로 리다이렉트하는 디버깅 기초.</p>
+            <div class="lab-links">
+              <a href="./STM32F103/2.%20Serial%20Debug" class="lab-link-btn">디렉토리 탐색</a>
+            </div>
+          </div>
+
+          <div class="lab-card">
+            <div class="lab-card-header">
+              <div class="lab-icon-box"><i data-lucide="toggle-right" style="width: 20px; height: 20px;"></i></div>
+              <span class="file-extension">STM32CubeIDE</span>
+            </div>
+            <h4 class="lab-title">4. GPIO_Basic / EVB1 / EVB2</h4>
+            <p class="lab-desc">스위치 풀업/풀다운 신호를 수집하여 하드웨어 LED를 점등하는 기초 입출력 루프 코드 패키지.</p>
+            <div class="lab-links">
+              <a href="./STM32F103/4.%20GPIO_Basic" class="lab-link-btn">기본형</a>
+              <a href="./STM32F103/4.%20GPIO_EVB1" class="lab-link-btn">EVB1</a>
+              <a href="./STM32F103/4.%20GPIO_EVB2" class="lab-link-btn">EVB2</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. EXTI -->
+      <section class="lab-section interrupt">
+        <h2 class="section-title interrupt">
+          <i data-lucide="zap"></i>
+          하드웨어 외부 인터럽트 (External Interrupt - EXTI)
+        </h2>
+        <div class="lab-grid">
+          <div class="lab-card">
+            <div class="lab-card-header">
+              <div class="lab-icon-box"><i data-lucide="radio" style="width: 20px; height: 20px;"></i></div>
+              <span class="file-extension">STM32CubeIDE</span>
+            </div>
+            <h4 class="lab-title">4. EXTI_Basic / EVB1 / EVB2 / EVB3</h4>
+            <p class="lab-desc">폴링 연산 없이 신호 에지 트리거 시 인터럽트 벡터 테이블 및 실시간 콜백함수 처리 구현.</p>
+            <div class="lab-links">
+              <a href="./STM32F103/4.%20EXTI_Basic" class="lab-link-btn">기본형</a>
+              <a href="./STM32F103/4.%20EXIT_EVB1" class="lab-link-btn">EVB1</a>
+              <a href="./STM32F103/4.%20EXTI_EVB2" class="lab-link-btn">EVB2</a>
+              <a href="./STM32F103/4.%20EXTI_EVB3" class="lab-link-btn">EVB3</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. ADC -->
+      <section class="lab-section adc">
+        <h2 class="section-title adc">
+          <i data-lucide="bar-chart-3"></i>
+          아날로그 데이터 수집 (ADC)
+        </h2>
+        <div class="lab-grid">
+          <div class="lab-card">
+            <div class="lab-card-header">
+              <div class="lab-icon-box"><i data-lucide="gauge" style="width: 20px; height: 20px;"></i></div>
+              <span class="file-extension">STM32CubeIDE</span>
+            </div>
+            <h4 class="lab-title">5. ADC_Basic / EVB1 / EVB2</h4>
+            <p class="lab-desc">가변저항 등 센서의 미세 아날로그 신호를 12비트 디지털 코드로 변환 수집하는 폴링 루틴 실습.</p>
+            <div class="lab-links">
+              <a href="./STM32F103/5.%20ADC_Basic" class="lab-link-btn">기본형</a>
+              <a href="./STM32F103/5.%20ADC_EVB1" class="lab-link-btn">EVB1</a>
+              <a href="./STM32F103/5.%20ADC_EVB2" class="lab-link-btn">EVB2</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. TIM & PWM -->
+      <section class="lab-section timer">
+        <h2 class="section-title timer">
+          <i data-lucide="clock"></i>
+          타이머 및 모터/액추에이터 제어 (TIM & PWM)
+        </h2>
+        <div class="lab-grid">
+          <div class="lab-card">
+            <div class="lab-card-header">
+              <div class="lab-icon-box"><i data-lucide="timer" style="width: 20px; height: 20px;"></i></div>
+              <span class="file-extension">STM32CubeIDE</span>
+            </div>
+            <h4 class="lab-title">6. TIM_Basic (기초 타이머)</h4>
+            <p class="lab-desc">타이머의 프리스케일러(Prescaler) 및 카운터를 연산하여 일정한 주기로 타겟 루틴을 호출하는 기법.</p>
+            <div class="lab-links">
+              <a href="./STM32F103/6.%20TIM_Basic" class="lab-link-btn">디렉토리 탐색</a>
+            </div>
+          </div>
+
+          <div class="lab-card">
+            <div class="lab-card-header">
+              <div class="lab-icon-box"><i data-lucide="waves" style="width: 20px; height: 20px;"></i></div>
+              <span class="file-extension">STM32CubeIDE</span>
+            </div>
+            <h4 class="lab-title">6. TIM_PWM (펄스폭 변조)</h4>
+            <p class="lab-desc">PWM 캐리어 주파수 설정 및 타이머 CCR 값을 갱신하여 듀티비(Duty Cycle)를 조절하는 하드웨어 제어.</p>
+            <div class="lab-links">
+              <a href="./STM32F103/6.%20TIM_PWM" class="lab-link-btn">디렉토리 탐색</a>
+            </div>
+          </div>
+
+          <div class="lab-card">
+            <div class="lab-card-header">
+              <div class="lab-icon-box"><i data-lucide="volume-2" style="width: 20px; height: 20px;"></i></div>
+              <span class="file-extension">STM32CubeIDE</span>
+            </div>
+            <h4 class="lab-title">6. TIM_Buzzer (멜로디 연주)</h4>
+            <p class="lab-desc">피에조 부저의 동작 원리를 적용하기 위해 타이머 ARR을 조절해 음계 주파수 파형을 합성하는 멜로디 제어.</p>
+            <div class="lab-links">
+              <a href="./STM32F103/6.%20TIM_Buzzer" class="lab-link-btn">디렉토리 탐색</a>
+            </div>
+          </div>
+
+          <div class="lab-card">
+            <div class="lab-card-header">
+              <div class="lab-icon-box"><i data-lucide="eye" style="width: 20px; height: 20px;"></i></div>
+              <span class="file-extension">STM32CubeIDE</span>
+            </div>
+            <h4 class="lab-title">6. TIM_RGB-LED (컬러 믹싱)</h4>
+            <p class="lab-desc">3채널 타이머 PWM 신호를 각각 RGB 단자에 매핑하여 듀티비 비율에 맞춰 고품질 색상을 조절하는 프로젝트.</p>
+            <div class="lab-links">
+              <a href="./STM32F103/6.%20TIM_RGB-LED" class="lab-link-btn">디렉토리 탐색</a>
+            </div>
+          </div>
+
+          <div class="lab-card">
+            <div class="lab-card-header">
+              <div class="lab-icon-box"><i data-lucide="rotate-cw" style="width: 20px; height: 20px;"></i></div>
+              <span class="file-extension">STM32CubeIDE</span>
+            </div>
+            <h4 class="lab-title">6. TIM_Servo (RC 서보 제어)</h4>
+            <p class="lab-desc">서보모터가 요구하는 20ms 주기와 1.0ms~2.0ms 펄스 신호를 정밀 합성하여 정확한 물리적 각도를 지령하는 코드.</p>
+            <div class="lab-links">
+              <a href="./STM32F103/6.%20TIM_Servo" class="lab-link-btn">디렉토리 탐색</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. Serial Bus -->
+      <section class="lab-section comm">
+        <h2 class="section-title comm">
+          <i data-lucide="share-2"></i>
+          시리얼 버스 통신 프로토콜 (Serial Bus)
+        </h2>
+        <div class="lab-grid">
+          <div class="lab-card">
+            <div class="lab-card-header">
+              <div class="lab-icon-box"><i data-lucide="mail-question" style="width: 20px; height: 20px;"></i></div>
+              <span class="file-extension">STM32CubeIDE</span>
+            </div>
+            <h4 class="lab-title">7. Serial-Comm_UART / UART-IT</h4>
+            <p class="lab-desc">시리얼 통신의 기초인 폴링 방식 UART 통신 및 수신 비차단식 인터럽트(RXNE) 링버퍼 콜백 기법 대조 실습.</p>
+            <div class="lab-links">
+              <a href="./STM32F103/7.%20Serial-Comm_UART" class="lab-link-btn">기본형</a>
+              <a href="./STM32F103/7.%20Serial-Comm_UART-IT" class="lab-link-btn">인터럽트 방식</a>
+            </div>
+          </div>
+
+          <div class="lab-card">
+            <div class="lab-card-header">
+              <div class="lab-icon-box"><i data-lucide="server" style="width: 20px; height: 20px;"></i></div>
+              <span class="file-extension">STM32CubeIDE</span>
+            </div>
+            <h4 class="lab-title">7. Serial-Comm_I2C</h4>
+            <p class="lab-desc">두 선(SDA, SCL)만을 이용한 동기식 통신 프로토콜 설계 및 마스터-슬레이브 데이터 프레임 전송.</p>
+            <div class="lab-links">
+              <a href="./STM32F103/7.%20Serial-Comm_I2C" class="lab-link-btn">디렉토리 탐색</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. Extra Modules -->
+      <section class="lab-section extra">
+        <h2 class="section-title extra">
+          <i data-lucide="plus-circle"></i>
+          외부 장치 드라이버 구현 (Extra Peripherals)
+        </h2>
+        <div class="lab-grid">
+          <div class="lab-card">
+            <div class="lab-card-header">
+              <div class="lab-icon-box"><i data-lucide="layout" style="width: 20px; height: 20px;"></i></div>
+              <span class="file-extension">STM32CubeIDE</span>
+            </div>
+            <h4 class="lab-title">Extra. CLCD (캐릭터 LCD)</h4>
+            <p class="lab-desc">HD44780 컨트롤러 명령 타이밍을 적용하여 1602 캐릭터 디스플레이에 영문 및 숫자를 출력하는 전용 라이브러리.</p>
+            <div class="lab-links">
+              <a href="./STM32F103/Extra.%20CLCD" class="lab-link-btn">디렉토리 탐색</a>
+            </div>
+          </div>
+
+          <div class="lab-card">
+            <div class="lab-card-header">
+              <div class="lab-icon-box"><i data-lucide="database" style="width: 20px; height: 20px;"></i></div>
+              <span class="file-extension">STM32CubeIDE</span>
+            </div>
+            <h4 class="lab-title">Extra. EEPROM & at24c</h4>
+            <p class="lab-desc">I2C 프로토콜을 이용해 비휘발성 저장소 AT24C의 특정 메모리 주소 영역에 데이터를 쓰고 읽는 드라이버 설계.</p>
+            <div class="lab-links">
+              <a href="./STM32F103/Extra.%20EEPROM" class="lab-link-btn">실습형</a>
+              <a href="./STM32F103/at24c" class="lab-link-btn">at24c 드라이버</a>
+            </div>
+          </div>
+
+          <div class="lab-card">
+            <div class="lab-card-header">
+              <div class="lab-icon-box"><i data-lucide="radar" style="width: 20px; height: 20px;"></i></div>
+              <span class="file-extension">STM32CubeIDE</span>
+            </div>
+            <h4 class="lab-title">Extra. HC-SR04 (초음파 거리 센서)</h4>
+            <p class="lab-desc">센서의 트리거 펄스 출력 후 반사되어 돌아온 에코 구간 신호 하이 상태 시간을 입력 캡처 타이머로 카운트하여 거리 계산.</p>
+            <div class="lab-links">
+              <a href="./STM32F103/Extra.%20HC-SR04" class="lab-link-btn">디렉토리 탐색</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- TAB 3: Course Info -->
+    <div id="info" class="tab-panel">
+      <div class="info-grid">
+        <!-- Professor Card -->
+        <div class="profile-card">
+          <div class="avatar-wrapper">KHU</div>
+          <h2 class="prof-name">김동한 교수</h2>
+          <p class="prof-title">경희대학교 전자공학과</p>
+          
+          <ul class="prof-info-list">
+            <li>
+              <i data-lucide="map-pin" style="width: 18px; height: 18px;"></i>
+              전자정보대학 609호
+            </li>
+            <li>
+              <i data-lucide="phone" style="width: 18px; height: 18px;"></i>
+              내선번호: 3831
+            </li>
+            <li>
+              <i data-lucide="mail" style="width: 18px; height: 18px;"></i>
+              donghani@khu.ac.kr
+            </li>
+            <li>
+              <i data-lucide="clock" style="width: 18px; height: 18px;"></i>
+              상담시간: 매주 수업 후 1시간
+            </li>
+          </ul>
+        </div>
+
+        <!-- Course Details -->
+        <div class="details-card">
+          <div class="detail-item">
+            <h3><i data-lucide="book"></i>교과 주교재</h3>
+            <p><strong>STM32CubeIDE를 이용한 STM32 따라하기</strong></p>
+            <p style="font-size: 0.85rem; margin-top: 5px;">저자: 김남수, 이진</p>
+            <div class="textbook-box">
+              <div class="textbook-icon"><i data-lucide="library"></i></div>
+              <div style="font-size: 0.9rem;">STM32CubeIDE 환경에서 HAL API와 임베디드 주변기기를 가장 쉽고 직관적으로 학습할 수 있는 실무 지침서입니다.</div>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <h3><i data-lucide="video"></i>온라인 강의 채널</h3>
+            <p>수업 내용의 이해를 돕기 위하여 매 교시 강의 영상의 녹화본을 Youtube에 업로드하고 있습니다.</p>
+            <div class="youtube-banner">
+              <div class="youtube-banner-header">
+                <div class="youtube-icon"><i data-lucide="play" style="width: 20px; height: 20px;"></i></div>
+                <div class="yt-title">YouTube 채널 (경희대 김동한)</div>
+              </div>
+              <a href="https://www.youtube.com/channel/UCT_h-5YhlC0t9LEdVckdrXQ" class="yt-link" target="_blank">
+                동영상 시청하러 가기
+                <i data-lucide="external-link" style="width: 16px; height: 16px;"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p>&copy; 2026 Kyung Hee University Department of Electronic Engineering. All rights reserved.</p>
+      <p style="margin-top: 5px; font-size: 0.8rem; opacity: 0.7;">본 자료는 김동한 교수님의 마이크로프로세서 수업 전용으로 제공되며, 소스 코드는 <a href="https://github.com/donghani/class-microprocessor" target="_blank">GitHub</a>에서 확인할 수 있습니다.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Lucide Icons Initialization
+    lucide.createIcons();
+
+    // Tab Switch Logic
+    function switchTab(tabId) {
+      // Deactivate all tabs
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+
+      // Activate selected tab
+      const selectedBtn = Array.from(document.querySelectorAll('.tab-btn')).find(btn => 
+        btn.getAttribute('onclick').includes(tabId)
+      );
+      if (selectedBtn) selectedBtn.classList.add('active');
+
+      const selectedPanel = document.getElementById(tabId);
+      if (selectedPanel) selectedPanel.classList.add('active');
+    }
+
+    // Interactive Search Logic for Lectures
+    function filterLectures() {
+      const searchInput = document.getElementById('lectureSearch').value.toLowerCase();
+      const cards = document.querySelectorAll('#lecturesGrid .card');
+      
+      cards.forEach(card => {
+        const titleData = card.getAttribute('data-title').toLowerCase();
+        const cardTitleText = card.querySelector('.card-title').innerText.toLowerCase();
+        const cardDescText = card.querySelector('.card-desc').innerText.toLowerCase();
+        
+        if (titleData.includes(searchInput) || cardTitleText.includes(searchInput) || cardDescText.includes(searchInput)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
+</body>
 </html>

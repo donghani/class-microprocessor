@@ -1,0 +1,34 @@
+# STM32CubeIDE Build Outputs
+**/Debug/
+**/Release/
+**/bin/
+**/obj/
+**/*.elf
+**/*.bin
+**/*.hex
+**/*.map
+**/*.o
+**/*.d
+**/*.su
+**/*.o.d
+
+# Keil / MDK Build Outputs
+**/*.axf
+**/*.htm
+**/*.dep
+**/listings/
+**/objects/
+**/*.lnp
+**/*.sct
+**/*.lst
+
+# IDE & Tool Metadata (Usually ignored, keep if students need it, but keep basic config)
+**/.settings/
+**/*.launch
+**/.launches/
+**/*.bak
+**/*.dep
+
+# System Files
+.DS_Store
+Thumbs.db
